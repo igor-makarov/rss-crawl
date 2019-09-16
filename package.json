@@ -10,6 +10,7 @@
   "author": "Igor Makarov",
   "license": "MIT",
   "dependencies": {
+    "find-rss": "^1.6.4",
     "sqlite3": "^4.0.0",
     "supercrawler": "^1.7.1"
   }
