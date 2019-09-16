@@ -1,5 +1,9 @@
 #!/bin/sh
 
->&2 echo "$NETLIFY_CACHE_DIR"
 mkdir _site
+( 
+  cd _site
+  curl -O "https://rss-crawler.netlify.com/crawler.sqlite"
+  curl -O "https://rss-crawler.netlify.com/rss.txt"
+)
 node index.js
