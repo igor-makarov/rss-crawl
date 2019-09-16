@@ -1,0 +1,16 @@
+{
+  "name": "rss-crawl",
+  "version": "0.0.1",
+  "description": "Crawls the Web for RSS feeds",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Igor Makarov",
+  "license": "MIT",
+  "dependencies": {
+    "redis-server": "^1.2.2",
+    "supercrawler": "^1.7.1"
+  }
+}
