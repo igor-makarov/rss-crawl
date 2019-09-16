@@ -2,4 +2,4 @@
   command = "./netlify-build.sh"
   publish = "_site"
 [build.environment]
-  HALT_SECONDS = "300"
+  HALT_SECONDS = "840"
