@@ -68,10 +68,12 @@ crawler.on("handlersError", function (err) {
   console.error(err);
 });
 
-setTimeout(() => {
-	console.log("stopping!")
-	process.exit(0)
-}, process.env.HALT_SECONDS * 1000)
+if (process.env.HALT_SECONDS) {
+	setTimeout(() => {
+		console.log("stopping!")
+		process.exit(0)
+	}, process.env.HALT_SECONDS * 1000)
+}
 
 crawler.getUrlList()
   .insertIfNotExists(new supercrawler.Url(scanRoot.toString()))
