@@ -1,0 +1,5 @@
+[build]
+  command = "mkdir _site; node index.js"
+  publish = "_site"
+[build.environment]
+  HALT_SECONDS = "300"
