@@ -10,7 +10,7 @@
   "author": "Igor Makarov",
   "license": "MIT",
   "dependencies": {
-    "redis-server": "^1.2.2",
+    "sqlite3": "^4.0.0",
     "supercrawler": "^1.7.1"
   }
 }

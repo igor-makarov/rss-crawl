@@ -1,17 +1,29 @@
 const supercrawler = require("supercrawler");
 const fs = require('fs');
+const DbUrlList = require('./DbUrlList');
+
+
+// const scanRoot = new URL('https://www.lemonde.fr/')
+// const scanRoot = new URL('https://twitter.com/jsnell')
+const scanRoot = new URL('https://www.specificfeeds.com/')
 
 var crawler = new supercrawler.Crawler({
-	urlList: new supercrawler.RedisUrlList({
-		redis: {
-			host: "127.0.0.1",
-			port: "6379",
-		},
-		delayHalfLifeMs: 10,
+	urlList: new DbUrlList({
+		db: {
+			database: "crawler",
+			username: "root",
+			password: "password",
+			sequelizeOpts: {
+				dialect: 'sqlite',
+				storage: '_site/crawler.sqlite'
+			}
+		}
 	}),
 	interval: 10,
 	concurrentRequestsLimit: 200,
 });
+
+crawler.setMaxListeners(100)
 
 crawler.addHandler("text/html", function (ctx) {
 	var urls = supercrawler.handlers.htmlLinkParser()(ctx);
@@ -28,16 +40,11 @@ crawler.addHandler("text/html", function (ctx) {
 	return [...roots].concat(urls);
 });
 
-crawler.addHandler("text/html", function (url) {
-	var urlObj = new URL(url.url);
-	return [new URL('/', urlObj).toString()];
-});
-
 var startTime = Date.now()
 var found = 0
 crawler.addHandler("application/rss+xml", function (context) {
 	found += 1;
-	fs.appendFile('rss.txt', context.url + "\n", e => { });
+	fs.appendFile('_site/rss.txt', context.url + "\n", e => { });
   console.log(`RSS: avg speed: ${found/((Date.now() - startTime)/1000)} per second ${context.url}`);
 });
 crawler.addHandler(supercrawler.handlers.robotsParser());
@@ -56,8 +63,7 @@ crawler.on("handlersError", function (err) {
 });
 
 crawler.getUrlList()
-  // .insertIfNotExists(new supercrawler.Url("https://stratechery.com/"))
-  .insertIfNotExists(new supercrawler.Url("http://www.specificfeeds.com/"))
+  .insertIfNotExists(new supercrawler.Url(scanRoot.toString()))
   .then(function () {
     return crawler.start();
   });
